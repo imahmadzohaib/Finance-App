@@ -1,0 +1,30 @@
+{
+  "name": "finance-app",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "seed": "node seed.mjs"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^4.10.0",
+    "@nuxtjs/supabase": "^2.0.9",
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.111.0",
+    "date-fns": "^4.4.0",
+    "nuxt": "^4.5.0",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.40",
+    "vue-router": "^5.2.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.5.0",
+    "@iconify-json/heroicons": "^1.2.3",
+    "supabase": "^2.115.0"
+  }
+}
