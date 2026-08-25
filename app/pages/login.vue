@@ -6,7 +6,7 @@
 
         <form @submit.prevent="handleLogin">
             <UFormField label="Email" name="email" class="mb-4" :required="true" help="You will receive an email with the confirmation link">
-                <UInput type="email" placeholder="Email" required v-model="email"/>
+                <UInput type="email" placeholder="Email" required v-model="email" class="w-[50%]"/>
             </UFormField>
             <UButton type="submit" variant="solid" color="neutral" :loading="pending" :disabled="pending" >Sign-in</UButton>
         </form>
