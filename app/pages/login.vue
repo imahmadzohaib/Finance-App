@@ -33,7 +33,6 @@ const pending = ref(false)
 const { toastError } = useAppToast();
 const supabase = useSupabaseClient();
 const redirectUrl = useRuntimeConfig().public.baseUrl
-console.log(redirectUrl)
 useIsUserLoggedIn()
 
 const handleLogin = async ()=>{
