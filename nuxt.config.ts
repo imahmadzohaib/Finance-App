@@ -11,4 +11,9 @@ export default defineNuxtConfig({
       exclude: ["/login","/confirm"],
     },
   },
+  runtimeConfig:{
+    public:{
+      baseUrl: import.meta.env.BASE_URL ?? 'http://localhost:3000'
+    }
+  }
 });
