@@ -42,11 +42,7 @@ const handleLogin = async ()=>{
         const {error} = await supabase.auth.signInWithOtp({
             email:email.value,
             options:{
-<<<<<<< HEAD
-                emailRedirectTo: 'https://finance-app-alpha-flax.vercel.app/confirm'
-=======
                 emailRedirectTo: `$${redirectUrl}/confirm`
->>>>>>> 1d59eff (data changed)
             }
         })
         if(error){
