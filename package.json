@@ -25,6 +25,7 @@
   "devDependencies": {
     "@faker-js/faker": "^10.5.0",
     "@iconify-json/heroicons": "^1.2.3",
+    "@types/node": "^26.3.0",
     "supabase": "^2.115.0"
   }
 }
