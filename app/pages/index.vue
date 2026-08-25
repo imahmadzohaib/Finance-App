@@ -24,7 +24,7 @@
     </div>
     <div>
       <UButton icon="i-heroicons-plus-circle" color="neutral" variant="outline" label="Add"  @click="isOpen = true" />
-      <TransactionalModal v-model="isOpen" @saved="refresh" />
+      <TransactionalModal v-model="isOpen" @saved="refreshAll" />
     </div>
   </section>
 
@@ -32,7 +32,7 @@
     <div v-for="(transactionsOnDay, date) in byDate" :key="date" class="mb-10">
       <DailyTransactionSummary :date="date" :transactions="transactionsOnDay" />
       <Transaction v-for="transaction in transactionsOnDay" :key="transaction.id" :transaction="transaction"
-        @deleted="refresh" @edited="refresh" />
+        @deleted="refreshAll" @edited="refreshAll" />
     </div>
   </section>
   <section v-else>
@@ -70,7 +70,10 @@ const { refresh: refreshPrevious,
     savingTotal: prevSavingTotal,
   } } = useFetchTransactions(previous)
 
-await refreshPrevious()
-await refresh()
 
+const refreshAll = async () => {
+  await Promise.all([refresh(), refreshPrevious()])
+}
+
+await refreshAll()
 </script>
