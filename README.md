@@ -1,75 +1,166 @@
-# Nuxt Minimal Starter
+# 💰 Finance Tracker
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A personal finance tracking app built with **Nuxt 4**, **Nuxt UI**, and **Supabase**. Track income, expenses, savings, and investments, view trends over time, and manage everything through a clean, responsive interface.
 
-## Setup
+🔗 **Live demo:** [finance-app-alpha-flax.vercel.app](https://finance-app-alpha-flax.vercel.app/)
 
-Make sure to install dependencies:
+---
+
+## ✨ Features
+
+- 🔐 **Passwordless authentication** — sign in via magic link, no passwords to manage
+- 💸 **Transaction tracking** — log Income, Expenses, Savings, and Investments
+- 🏷️ **Categorized expenses** — tag spending as Food, Housing, Car, Entertainment, and more
+- 📊 **Period-based trends** — compare totals against the previous period at a glance
+- ✏️ **Full CRUD** — add, edit, and delete transactions with instant UI updates
+- 🌓 **Light & dark mode** — powered by Nuxt UI's theming
+- 🖼️ **Profile avatars** — synced with Supabase Storage
+- 🌱 **Database seeding** — generate realistic sample data for local development
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer          | Technology                                              |
+|----------------|----------------------------------------------------------|
+| Framework      | [Nuxt 4](https://nuxt.com)                                |
+| UI Components  | [Nuxt UI](https://ui.nuxt.com)                             |
+| Styling        | [Tailwind CSS 4](https://tailwindcss.com)                  |
+| Backend / Auth | [Supabase](https://supabase.com) (`@nuxtjs/supabase`)      |
+| Validation     | [Zod](https://zod.dev)                                     |
+| Dates          | [date-fns](https://date-fns.org)                            |
+| Seed data      | [Faker.js](https://fakerjs.dev)                             |
+| Hosting        | [Vercel](https://vercel.com)                                |
+
+---
+
+## 📁 Project Structure
+
+```
+finance-app/
+├── components/
+│   ├── Transaction.vue          # Single transaction row (edit/delete actions)
+│   ├── TransactionalModal.vue   # Add/edit transaction form modal
+│   ├── DailyTransactionSummary.vue
+│   └── Trend.vue                # Income/Expense/Saving/Investment summary cards
+├── composables/
+│   ├── useFetchTransactions.js  # Fetches + aggregates transactions for a period
+│   ├── useSelectedTimePeriod.js # Resolves current/previous period date ranges
+│   ├── useCurrency.js           # Reactive currency formatting
+│   ├── useAvatarUrl.js          # Loads/refreshes the user's avatar
+│   ├── useIsUserLoggedIn.js     # Redirects authenticated users away from auth pages
+│   └── useAppToast.js           # Toast notification helper
+├── constants/                   # Shared enums (transaction types, categories, view options)
+├── pages/
+│   ├── index.vue                # Main dashboard — summary, trends, transaction list
+│   ├── login.vue                # Magic link sign-in page
+│   └── confirm.vue              # Auth callback landing page
+├── seed.mjs                     # Populates the database with sample transactions
+├── nuxt.config.ts
+└── package.json
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- A [Supabase](https://supabase.com) project
+
+### 1. Clone and install
 
 ```bash
-# npm
+git clone <your-repo-url>
+cd finance-app
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+### 2. Configure environment variables
 
-Start the development server on `http://localhost:3000`:
+Create a `.env` file in the project root:
+
+```dotenv
+NUXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NUXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+NUXT_PUBLIC_BASE_URL=http://localhost:3000
+
+# Only needed for running the seed script
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+```
+
+> ⚠️ Never commit `.env` — it's already excluded via `.gitignore`.
+
+### 3. Set up the database
+
+In your Supabase project, create a `transactions` table with (at minimum) these columns:
+
+| Column       | Type        | Notes                                   |
+|--------------|-------------|------------------------------------------|
+| `id`         | `int8`      | Primary key, auto-increment              |
+| `created_at` | `timestamp` | Transaction date                         |
+| `amount`     | `numeric`   | Positive number                          |
+| `type`       | `text`      | `Income`, `Expense`, `Saving`, `Investment` |
+| `category`   | `text`      | Only set when `type = Expense`           |
+| `description`| `text`      | Optional                                 |
+| `user_id`    | `uuid`      | References `auth.users`                  |
+
+Enable **Row Level Security** and add a policy so users can only read/write their own rows (e.g. `user_id = auth.uid()`).
+
+### 4. (Optional) Seed sample data
 
 ```bash
-# npm
+npm run seed
+```
+
+This generates ~2 years of realistic sample transactions for every existing user, using Faker.js.
+
+### 5. Run the dev server
+
+```bash
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+Visit `http://localhost:3000` 🎉
 
-Build the application for production:
+---
 
-```bash
-# npm
-npm run build
+## 📜 Available Scripts
 
-# pnpm
-pnpm build
+| Command           | Description                                  |
+|-------------------|-----------------------------------------------|
+| `npm run dev`     | Start the local development server             |
+| `npm run build`   | Build the app for production                   |
+| `npm run generate`| Generate a fully static build                  |
+| `npm run preview` | Preview the production build locally           |
+| `npm run seed`    | Populate the database with sample transactions |
 
-# yarn
-yarn build
+---
 
-# bun
-bun run build
-```
+## 🔑 Authentication Flow
 
-Locally preview production build:
+This app uses **Supabase magic link (OTP) authentication** — no passwords:
 
-```bash
-# npm
-npm run preview
+1. A user enters their email on the **Login** page.
+2. Supabase emails a one-time sign-in link, valid for 5 minutes.
+3. Clicking the link redirects to `/confirm`, which exchanges the token for a session.
+4. Once authenticated, the user is redirected into the app.
 
-# pnpm
-pnpm preview
+Configure your redirect URLs in **Supabase Dashboard → Authentication → URL Configuration** so they match your deployed domain(s) — see the [Nuxt Supabase module docs](https://supabase.nuxtjs.org) for details.
 
-# yarn
-yarn preview
+---
 
-# bun
-bun run preview
-```
+## ☁️ Deployment
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+This app deploys cleanly to **Vercel** using Nuxt's built-in Nitro preset — no extra configuration needed. Just make sure to:
+
+1. Set all environment variables from your `.env` file in **Vercel → Project Settings → Environment Variables**.
+2. Add your production URL to Supabase's **Redirect URLs** allowlist.
+3. Trigger a deploy — Nuxt/Nitro will automatically detect the Vercel environment at build time.
+
+---
+
+## 📄 License
+
+This project is for personal/educational use. Adapt as needed.
