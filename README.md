@@ -2,7 +2,8 @@
 
 A personal finance tracking app built with **Nuxt 4**, **Nuxt UI**, and **Supabase**. Track income, expenses, savings, and investments, view trends over time, and manage everything through a clean, responsive interface.
 
-🔗 **Live demo:** <a href="https://finance-app-alpha-flax.vercel.app/" target="_blank" rel="noopener noreferrer">finance-app-alpha-flax.vercel.app</a>
+🔗 **Live demo:** [finance-app-alpha-flax.vercel.app](https://finance-app-alpha-flax.vercel.app/)
+
 ---
 
 ## ✨ Features
