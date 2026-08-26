@@ -54,7 +54,11 @@ finance-app/
 ├── pages/
 │   ├── index.vue                # Main dashboard — summary, trends, transaction list
 │   ├── login.vue                # Magic link sign-in page
-│   └── confirm.vue              # Auth callback landing page
+│   ├── confirm.vue              # Auth callback landing page
+│   └── settings                 # All the Settings 
+│       ├── avatar.vue           # Update the avatar
+│       ├── profile.vue          # Update Name and Email
+│       └── settings.vue         # Change the default view
 ├── seed.mjs                     # Populates the database with sample transactions
 ├── nuxt.config.ts
 └── package.json
